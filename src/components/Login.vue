@@ -49,22 +49,34 @@
     <p class="errMsg">{{ errMsg }}</p>
 
     <form @submit.prevent="handleSubmit">
-
-      <div class="form-group">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" id="email" v-model="email" required placeholder="email"/>
+      <div class="form-floating mb-3">
+        <input 
+          type="email" 
+          id="email" 
+          v-model="email" 
+          required 
+          placeholder="email"
+          class="form-control"/>
+        <label for="email">Email</label>
       </div>
 
-      <div class="form-group">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" id="password" v-model="password" required placeholder="password"/>
+      <div class="form-floating mb-3">
+        <input 
+          type="password" 
+          id="password" 
+          v-model="password" 
+          required 
+          placeholder="password"
+          class="form-control"
+        />
+        <label for="password">Password</label>
       </div>
       
-      <button class="btn" type="submit">
-        <span>Login</span>
+      <button class="btn" type="submit" :disabled="!email || !password">
+        Login
       </button>
     </form>
 
-    <router-link to="/register"><p>or create new account!</p></router-link>
+    <router-link to="/register">or create new account!</router-link>
   </section>
 </template>

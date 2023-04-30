@@ -72,31 +72,31 @@
 
     <form @submit.prevent="handleSubmit">
 
-      <div class="form-group">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" id="email" v-model="email" required placeholder="email"/>
+      <div class="form-floating mb-3">
+        <input type="email" id="email" v-model="email" required placeholder="email" class="form-control"/>
+        <label for="email">Email</label>
       </div>
 
-      <div class="form-group">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" id="password" v-model="password" required placeholder="password"/>
+      <div class="form-floating mb-3">
+        <input type="password" id="password" v-model="password" required placeholder="password" class="form-control"/>
+        <label for="password" >Password</label>
       </div>
 
-      <div class="form-group">
-        <label for="matchPassword" class="form-label">Password again</label>
-        <input type="password" id="matchPassword" v-model="matchPassword" required placeholder="password" @input="validatePasswords"/>
+      <div class="form-floating mb-3">
+        <input type="password" id="matchPassword" v-model="matchPassword" required  class="form-control" placeholder="password" @input="validatePasswords"/>
+        <label for="matchPassword" >Password again</label>
       </div>
 
-      <div class="form-group">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" id="name" v-model="name" required placeholder="name"/>
+      <div class="form-floating mb-3">
+        <input type="text" id="name" v-model="name" required placeholder="name" class="form-control"/>
+        <label for="name" >Name</label>
       </div>
       
-      <button class="btn" type="submit">Sign up</button>
+      <button class="btn" type="submit" :disabled="!email || !password || !validatePassword.valueOf">Sign up</button>
 
     </form>
 
-    <router-link to="/login"><p>or login!</p></router-link>
+    <router-link to="/login">or login!</router-link>
 
   </section>
 </template>

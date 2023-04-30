@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.css'
 import { createApp } from 'vue'
 import router from './router'
 import store from "./store";
@@ -10,3 +11,5 @@ app.use(store)
 app.component('font-awesome-icon', FontAwesomeIcon)
 
 window.vm = app.mount('#app')
+
+import 'bootstrap/dist/js/bootstrap.js'

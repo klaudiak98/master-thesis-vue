@@ -1,7 +1,7 @@
 <script setup>
   import Admin from './Admin.vue';
   import Profile from './Profile.vue';
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { useStore } from 'vuex'
 
   const store = useStore()

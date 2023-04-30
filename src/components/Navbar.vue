@@ -2,8 +2,7 @@
   import axios from 'axios';
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
-
-  const GOOGLE_API_URL = 'https://www.googleapis.com/books/v1/volumes?q=';
+  const GOOGLE_BOOKS_API = 'https://www.googleapis.com/books/v1/volumes?q=';
   const books = ref([]);
   const router = useRouter()
 
@@ -24,10 +23,12 @@
 
     if (search.length) 
     {
-      const response = await axios.get(`${GOOGLE_API_URL}${search}`);
+      const response = await axios.get(`${GOOGLE_BOOKS_API}${search}`);
       searchInput.length ? 
         setBooks(response?.data?.items) :
         setBooks([])
+
+      console.log(response)
     } else {
       setBooks([]);
     }
@@ -35,19 +36,34 @@
 </script>
 
 <template>
-    <nav class="navbar">
-      <router-link to="/">Logo</router-link>
-      <div>
-        <input type="text" placeholder="Search book" v-model="searchInput" @input="searchBook" style="width: 20em;"/>
-        <div class="searchList">
-          <div v-for="book in books" class="box" @click="showBook(book.id)">
-            <p class="title" >{{ book?.volumeInfo?.title }}</p>
+  <nav class="navbar">
+    <router-link to="/">
+        LOGO
+    </router-link>
+
+    <div>
+      <input 
+        type="text" 
+        placeholder="Search book" 
+        v-model="searchInput" 
+        @input="searchBook" 
+        style="width: 20em;"
+        class="form-control"
+      />
+      <div class="searchBarList">
+        <div v-for="book in books" class="box">
+          <router-link :to="{ name: 'Book', params: { bookId: book.id }}">
+            <p class="title" >{{ book?.volumeInfo?.title}}</p>
             <p v-if="book?.volumeInfo?.authors" class="author" >{{ book?.volumeInfo?.authors.join(', ') }}</p>
-          </div>
+          </router-link>
         </div>
       </div>
-      <router-link to="/settings"><font-awesome-icon icon="fa-solid fa-cogs" style="color: black"/></router-link>
-    </nav>
+    </div>
+
+    <router-link to="/settings">
+      <font-awesome-icon icon="fa-solid fa-cogs" style="color: black" class="fa-2x"/>
+    </router-link>
+  </nav>
 </template>
 
 <style>
@@ -59,7 +75,7 @@
     margin: 0 1.5em;
   }
 
-  .searchList {
+  .searchBarList {
     position: absolute;
     top: 3.5em;
     z-index: 100;
@@ -80,7 +96,7 @@
   .box:focus,
   .box:hover {
     background-color: #abababcf;
-    box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+    box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.6);
   }
 
   .title {
