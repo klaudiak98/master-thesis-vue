@@ -1,15 +1,14 @@
-import axios from 'axios';
-import authHeader from './auth-header';
+import api from './api';
 
 const API_URL = 'http://localhost:3500/users';
 
 class UserService {
   async getAllUsers() {
-    return await axios.get(API_URL, {headers: authHeader()});
+    return await api.get(API_URL);
   }
 
   async getUser() {
-    return await axios.get(API_URL + '/me', {headers: authHeader()});
+    return await api.get(API_URL + '/me');
   }
 
   async updateUser(user) {
@@ -18,38 +17,31 @@ class UserService {
     const password = user.password;
 
     if (password.length) {
-        return await axios.patch(
+        return await api.patch(
             API_URL + '/update', 
             JSON.stringify({
                 email,
                 name,
                 password
-            }),
-            {
-                headers: authHeader(),
-            }
+            })
         );
     } else {
-        return await axios.patch(
+        return await api.patch(
             API_URL + '/update', 
             JSON.stringify({
                 email,
                 name,
-            }),
-            {
-                headers: authHeader(),
-            }
+            })
         );
     }
   }
 
   async deleteUser(email) {
-    return await axios.post(
+    return await api.post(
         API_URL + '/delete',
         JSON.stringify({
             email
-        }), 
-        {headers: authHeader()});
+        }));
   }
 }
 

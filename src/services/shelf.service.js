@@ -1,28 +1,25 @@
-import axios from 'axios';
-import authHeader from './auth-header';
+import api from './api';
 
 const API_URL = 'http://localhost:3500/shelves';
 
 class ShelfService {
 
     async getShelf(email) {
-        return await axios.post(
+        return await api.post(
             API_URL + 'my-shelf',
-            email,
-            {headers: authHeader()});
+            email);
     }
 
     async getBookState(req) {
         const bookId = req.bookId;
         const email = req.email;
 
-        return await axios.post(
+        return await api.post(
             API_URL + 'check-book',
             JSON.stringify({
                 email,
                 bookId
-            }),
-            {headers: authHeader()});
+            }));
     }
 
     async updateBook(req) {
@@ -30,30 +27,27 @@ class ShelfService {
         const email = req.email;
         const newState = req.newState;
 
-        return await axios.post(
+        return await api.post(
             API_URL + 'update-book', 
             JSON.stringify({
                 email,
                 bookId,
                 newState
-            }),
-            {headers: authHeader()});
+            }));
     }
 
     async removeBookFromShelf(req) {
         const bookId = req.bookId;
         const email = req.email;
 
-        return await axios.post(
+        return await api.post(
             API_URL + 'update-book', 
             JSON.stringify({
                 email,
                 bookId,
                 newState: ''
-            }),
-            {headers: authHeader()});
+            }));
     }
-
 }
 
 export default new ShelfService();

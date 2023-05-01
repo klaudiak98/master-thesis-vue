@@ -26,12 +26,15 @@ export const auth = {
         },
         registerFailure(auth) {
             auth.status.loggedIn = false;
+        },
+        refreshToken(auth, accessToken) {
+            auth.status.loggedIn = true;
+            auth.user = {...auth.user, accessToken: accessToken}
         }
     },
     actions:
     {
         login: (({ commit }, user) => {
-            console.log('wchodzi')
             return AuthService.login(user).then(
             user => {
                 commit('loginSuccess', user);
@@ -58,6 +61,9 @@ export const auth = {
                 return Promise.reject(error);
             }
             );
+        }),
+        refreshToken: (({commit}, accessToken) => {
+            commit('refreshToken', accessToken)
         })
     },
     getters:

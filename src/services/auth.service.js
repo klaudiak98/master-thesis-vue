@@ -1,4 +1,5 @@
-import axios from 'axios';
+import api from './api';
+import TokenService from './token.service';
 
 const API_URL = 'http://localhost:3500';
 
@@ -6,7 +7,7 @@ class AuthService {
     async login(user) {
         const email = user.email;
         const password = user.password;
-        const response = await axios
+        const response = await api
             .post(
                 `${API_URL}/auth`,
                 {
@@ -15,13 +16,13 @@ class AuthService {
                 }
                 );
         if (response.data.accessToken) {
-            localStorage.setItem('user', JSON.stringify(response.data));
+            TokenService.setUser(response.data)
         }
         return response.data;
     }
 
     logout() {
-        localStorage.removeItem('user');
+        TokenService.removeUser();
     }
 
     async register(user) {
@@ -29,7 +30,7 @@ class AuthService {
         const password = user.password;
         const name = user.name;
 
-        return await axios.post(
+        return await api.post(
             API_URL + '/register',
             {
                 email,
