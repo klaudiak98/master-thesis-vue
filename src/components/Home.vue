@@ -1,7 +1,7 @@
 <script setup>
   import Admin from './Admin.vue';
   import Profile from './Profile.vue';
-  import { computed, ref } from 'vue'
+  import { onMounted, computed, ref } from 'vue'
   import { useStore } from 'vuex'
 
   const store = useStore()
@@ -9,10 +9,10 @@
 
   const user = ref({});
   const isAdmin = ref(false);
-  ROLES = [{
+  const ROLES = {
     'Admin': 777,
     'User':100
-  }]
+  }
 
   onMounted(() => {
     user.value = auth.user;

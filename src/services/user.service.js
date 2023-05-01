@@ -1,7 +1,7 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:8080/api/users';
+const API_URL = 'http://localhost:3500/users';
 
 class UserService {
   async getAllUsers() {
@@ -43,11 +43,11 @@ class UserService {
     }
   }
 
-  async removeUser(userId) {
+  async deleteUser(email) {
     return await axios.post(
-        API_URL + '/remove',
+        API_URL + '/delete',
         JSON.stringify({
-            userId
+            email
         }), 
         {headers: authHeader()});
   }

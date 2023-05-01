@@ -7,13 +7,19 @@ import Settings from './components/Settings.vue'
 import Admin from './components/Admin.vue'
 import BookPage from './components/BookPage.vue'
 
+const ROLES = {
+  "User": 100,
+  "Admin":777
+}
+
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
     meta: {
-      authRequired: 'false',
+      authRequired: 'true',
+      allowedRoles: [ROLES.User]
     },
   },
   {
@@ -37,7 +43,8 @@ const routes = [
     name: 'Settings',
     component: Settings,
     meta: {
-      authRequired: 'false',
+      authRequired: 'true',
+      allowedRoles: [ROLES.User]
     },
   },
   {
@@ -45,7 +52,8 @@ const routes = [
     name: 'Profile',
     component: Profile,
     meta: {
-      authRequired: 'false',
+      authRequired: 'true',
+      allowedRoles: [ROLES.User]
     },
   },
   {
@@ -53,7 +61,8 @@ const routes = [
     name: 'Admin',
     component: Admin,
     meta: {
-      authRequired: 'false',
+      authRequired: 'true',
+      allowedRoles: [ROLES.Admin]
     },
   },
   {
@@ -61,7 +70,8 @@ const routes = [
     name: 'Book',
     component: BookPage,
     meta: {
-      authRequired: 'false',
+      authRequired: 'true',
+      allowedRoles: [ROLES.User]
     },
   },
 ]
@@ -71,33 +81,28 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  //check page is protected or not
   if (to.meta.authRequired === 'true') {
 
-    //get contact's id
-    const contactId = to.params.id
+    const user = localStorage.getItem('user');
+    if (!user) {
+      next('/login')
+    } 
 
-    //access check
-    if (
-      //if user is admin or super admin
-      user.role === 'admin' ||
-      //if user is the contact itself
-      user.id === contactId ||
-      //if user is manager and has necessary permissions
-      user.role === 'manager' &&
-      user.role.permissions.some(p => p.key === 'create-contact') &&
-      user.role.permissions.some(p => p.key === 'update-contact')
-    ) {
-      return next()
-    } else {
-      router.push({
-        name: 'Unauthorized'
-      })
+    if (to.meta.allowedRoles) {
+      const userRoles = JSON.parse(user).roles
+      const allowedRoles = to.meta.allowedRoles
+
+      if (userRoles.find(role => allowedRoles.includes(role))) {
+        return next();
+      } else {
+        return next('/')
+      }
     }
+    return next()
+
   } else {
     return next()
   }
 });
-
 
 export default router

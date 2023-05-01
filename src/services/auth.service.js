@@ -6,16 +6,14 @@ class AuthService {
     async login(user) {
         const email = user.email;
         const password = user.password;
-        console.log("email", email, password)
         const response = await axios
             .post(
-                'http://localhost:3500/auth',
+                `${API_URL}/auth`,
                 {
                     email,
                     password
                 }
                 );
-                console.log('response', response)
         if (response.data.accessToken) {
             localStorage.setItem('user', JSON.stringify(response.data));
         }

@@ -14,25 +14,22 @@
   const matchPassword = ref('');
   const validatePassword = ref(false);
   const errMsg = ref('');
+  const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
   onMounted(() => {
     const loggedIn = auth.status.loggedIn;
 
     if (loggedIn) {
-      router.push("/profile");
+      router.push("/");
     }
   });
 
   watch(
-      () => password.value,
+      () => [password.value, matchPassword.value],
       () => {
-          password.value.length === 8 ? validatePassword.value = true : validatePassword.value = false
+        PWD_REGEX.test(password.value) && password.value === matchPassword.value ? validatePassword.value = true : validatePassword.value = false
       }
   );
-
-  const validatePasswords = () => {
-    password.value === matchPassword.value ? validatePassword.value = true : validatePassword.value = false
-  }
 
   const handleSubmit = () => {
     if (! validatePassword.value) {
@@ -70,7 +67,7 @@
     <h1>Register</h1>
     <p class="errMsg">{{ errMsg }}</p>
 
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmit" >
 
       <div class="form-floating mb-3">
         <input type="email" id="email" v-model="email" required placeholder="email" class="form-control"/>
@@ -83,7 +80,7 @@
       </div>
 
       <div class="form-floating mb-3">
-        <input type="password" id="matchPassword" v-model="matchPassword" required  class="form-control" placeholder="password" @input="validatePasswords"/>
+        <input type="password" id="matchPassword" v-model="matchPassword" required  class="form-control" placeholder="password"/>
         <label for="matchPassword" >Password again</label>
       </div>
 
@@ -92,7 +89,7 @@
         <label for="name" >Name</label>
       </div>
       
-      <button class="btn" type="submit" :disabled="!email || !password || !validatePassword.valueOf">Sign up</button>
+      <button class="btn" type="submit" :disabled="!email || !password || !matchPassword || !name || !validatePassword">Sign up </button>
 
     </form>
 

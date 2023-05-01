@@ -16,7 +16,7 @@
     const loggedIn = auth.status.loggedIn;
 
     if (loggedIn) {
-      router.push("/home");
+      router.push("/");
     }
   });
   
@@ -25,11 +25,10 @@
       email: email.value,
       password: password.value
     }
-    console.log('user', user.value)
 
     store.dispatch("login", user.value).then(
       () => {
-        router.push("/home");
+        router.push("/");
       },
       (err) => {
         errMsg.value =

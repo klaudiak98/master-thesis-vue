@@ -1,28 +1,25 @@
 <script setup>
-import BooksList from './BooksList.vue';
+    import { onMounted, ref } from 'vue';
+    import UserServices from '../services/user.service';
+    
+    const user = ref({})
 
-const books = [
-    {
-      title: 'book1',
-      author: 'asdas',
-      id: 1,
-      img: 'asda'
-    },
-    {
-      title: 'book2',
-      author: 'asdasdfsds',
-      id: 2,
-      img: 'asdfssda'
-    },    
-  ];
+    onMounted(() => {
+        UserServices.getUser().then(
+            (res) => user.value = res.data,
+            (err) => console.error(err)
+        );
+    });
 </script>
 
 <template>
     <header class="header">
         <h1>Hi</h1>
+        {{ user }}
+
     </header>
 
-    <section>
+    <!-- <section>
         <h3>Currently reading</h3>
         <BooksList :books=books></BooksList>
     </section>
@@ -33,7 +30,7 @@ const books = [
     <section>
         <h3>Read</h3>
         <BooksList :books=books></BooksList>
-    </section>
+    </section> -->
 </template>
 
 <style>
