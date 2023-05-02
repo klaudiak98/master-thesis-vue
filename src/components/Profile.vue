@@ -1,12 +1,23 @@
 <script setup>
+    import BooksList from './BooksList.vue';
     import { onMounted, ref } from 'vue';
     import UserServices from '../services/user.service';
+    import ShelfServices from '../services/shelf.service';
     
     const user = ref({})
+    const shelf = ref([])
 
     onMounted(() => {
         UserServices.getUser().then(
-            (res) => user.value = res.data,
+            (res) => {
+                user.value = res.data
+                ShelfServices.getShelf(user.value.email).then(
+                    (res) => {
+                        shelf.value= res.data
+                    },
+                    (err) => console.error(err)
+                )
+            },
             (err) => console.error(err)
         );
     });
@@ -14,23 +25,21 @@
 
 <template>
     <header class="header">
-        <h1>Hi</h1>
-        {{ user }}
-
+        <h1>Hi {{ user.name }}</h1>
     </header>
 
-    <!-- <section>
+    <section>
         <h3>Currently reading</h3>
-        <BooksList :books=books></BooksList>
+        <BooksList :booksList=shelf?.currentlyReading></BooksList>
     </section>
     <section>
         <h3>Want to read</h3>
-        <BooksList :books=books></BooksList>
+        <BooksList :booksList=shelf?.wantToRead></BooksList>
     </section>
     <section>
         <h3>Read</h3>
-        <BooksList :books=books></BooksList>
-    </section> -->
+        <BooksList :booksList=shelf?.read></BooksList>
+    </section>
 </template>
 
 <style>

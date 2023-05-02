@@ -1,44 +1,40 @@
 <script setup>
   import axios from 'axios';
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
+  import { ref, watch } from 'vue';
   const GOOGLE_BOOKS_API = 'https://www.googleapis.com/books/v1/volumes?q=';
+
   const books = ref([]);
-  const router = useRouter()
+  const searchInput = ref('');
 
-  // zmienic na stan -> vuex
-  let searchInput = '';
-
-  const setBooks = (bookslist) => {
-    books.value = bookslist;
-  };
-
-  const showBook = (bookId) => {
-    setBooks([]);
-    router.push(`/book/${bookId}`);
-  };
+  watch(
+    () => searchInput.value,
+    () => searchBook()
+  )
 
   const searchBook = async () => {
-    const search = searchInput.replace(/\s+/g, '_');
+    const search = searchInput.value.replace(/\s+/g, '_');
 
     if (search.length) 
     {
       const response = await axios.get(`${GOOGLE_BOOKS_API}${search}`);
-      searchInput.length ? 
-        setBooks(response?.data?.items) :
-        setBooks([])
-
-      console.log(response)
+      searchInput.value.length ? 
+        books.value = response.data?.items : 
+        books.value = [];
     } else {
-      setBooks([]);
+      books.value = [];
     }
+  }
+
+  const clear = () => {
+    searchInput.value = ''
+    books.value = [];
   }
 </script>
 
 <template>
   <nav class="navbar">
     <router-link to="/">
-        LOGO
+      <img src="../logo.svg" style="height: 90px;"/>
     </router-link>
 
     <div>
@@ -46,13 +42,12 @@
         type="text" 
         placeholder="Search book" 
         v-model="searchInput" 
-        @input="searchBook" 
         style="width: 20em;"
         class="form-control"
       />
       <div class="searchBarList">
-        <div v-for="book in books" class="box">
-          <router-link :to="{ name: 'Book', params: { bookId: book.id }}">
+        <div v-for="book in books" class="box" @click="clear">
+          <router-link :to="{ name: 'Book', params: { bookId: book.id }}" style="color: black;">
             <p class="title" >{{ book?.volumeInfo?.title}}</p>
             <p v-if="book?.volumeInfo?.authors" class="author" >{{ book?.volumeInfo?.authors.join(', ') }}</p>
           </router-link>

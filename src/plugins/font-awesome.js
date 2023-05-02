@@ -3,9 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { 
     faUser,
     faCogs,
-    faWindowClose 
+    faWindowClose,
+    faEdit
 } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faUser, faCogs, faWindowClose);
+library.add(faUser, faCogs, faWindowClose, faEdit);
 
 export { FontAwesomeIcon };

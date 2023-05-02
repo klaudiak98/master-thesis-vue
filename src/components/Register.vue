@@ -43,8 +43,6 @@
         name: name.value
       }
 
-      console.log('user', user.value)
-
       store.dispatch("register", user.value).then(
         () => {
           router.push("/login");
