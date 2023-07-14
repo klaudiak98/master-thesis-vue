@@ -1,29 +1,18 @@
-# vue-project
+# master-thesis-vue
 
-This template should help get you started developing with Vue 3 in Vite.
+1/4 Master Thesis: _"Comparative analysis of the modern front-end technologies"_
 
-## Recommended IDE Setup
+## Run server
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+    $ npm install
+    $ npm run start
 
-## Customize configuration
+default port: 5173
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Links
 
-## Project Setup
+`Backend` : <https://github.com/klaudiak98/master-thesis-backend>
 
-```sh
-npm install
-```
+`React` : <https://github.com/klaudiak98/bookshelf>
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+`Angular` : <https://github.com/klaudiak98/master-thesis-angular>
